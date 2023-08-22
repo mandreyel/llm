@@ -102,12 +102,6 @@ pub struct BuildContext<'session> {
     pub scratch: &'session ScratchBuffers,
 }
 
-impl<'session> BuildContext<'session> {
-    pub fn get_scratch(&self, idx: usize) -> Option<&Buffer> {
-        self.scratch.get(idx)
-    }
-}
-
 unsafe impl Send for InferenceSession {}
 impl InferenceSession {
     /// Create a new InferenceSession

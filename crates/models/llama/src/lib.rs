@@ -177,7 +177,7 @@ impl KnownModel for Llama {
                 let input_self_attention = input_layer.share();
                 let mut current: ggml::Tensor;
 
-                ctx0.use_scratch(builder.get_scratch(0));
+                ctx0.use_scratch(builder.scratch.get(0));
 
                 // norm
                 current = ctx0.op_rms_norm(&input_layer);
@@ -309,7 +309,7 @@ impl KnownModel for Llama {
                 // projection (no bias)
                 current = ctx0.op_mul_mat(&self.layers[il].wo, &current);
 
-                ctx0.use_scratch(builder.get_scratch(1));
+                ctx0.use_scratch(builder.scratch.get(1));
 
                 let input_feed_forward = ctx0.op_add(&current, &input_self_attention);
 
@@ -337,7 +337,7 @@ impl KnownModel for Llama {
                 input_layer = current;
             }
 
-            ctx0.use_scratch(builder.get_scratch(0));
+            ctx0.use_scratch(builder.scratch.get(0));
 
             // norm
             input_layer = ctx0.op_rms_norm(&input_layer);

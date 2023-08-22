@@ -194,7 +194,7 @@ impl KnownModel for Falcon {
 
             for il in 0..n_layer {
                 // attention uses first scratch buffer
-                ctx0.use_scratch(builder.get_scratch(0));
+                ctx0.use_scratch(builder.scratch.get(0));
                 ctx0.set_offloading(self.params.should_offload(il));
 
                 // self-attention
@@ -322,7 +322,7 @@ impl KnownModel for Falcon {
                 current = ctx0.op_mul_mat(&self.layers[il].wo, &current);
 
                 // feed forward uses second scratch buffer
-                ctx0.use_scratch(builder.get_scratch(1));
+                ctx0.use_scratch(builder.scratch.get(1));
 
                 let inp_ff = layernorm_output.share();
                 let attn_out =
@@ -338,7 +338,7 @@ impl KnownModel for Falcon {
                 input_layer = current.share();
             }
 
-            ctx0.use_scratch(builder.get_scratch(0));
+            ctx0.use_scratch(builder.scratch.get(0));
 
             // norm
             input_layer = ctx0.op_norm(&input_layer);
