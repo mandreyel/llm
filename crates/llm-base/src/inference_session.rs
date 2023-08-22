@@ -104,7 +104,7 @@ pub struct BuildContext<'session> {
 
 impl<'session> BuildContext<'session> {
     pub fn get_scratch(&self, idx: usize) -> Option<&Buffer> {
-        Some(&self.scratch[idx])
+        self.scratch.get(idx)
     }
 }
 
